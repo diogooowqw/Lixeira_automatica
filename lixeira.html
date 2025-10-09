@@ -1,17 +1,183 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-
-      <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/lucide.min.js"></script>
-</head>
-<body>
+    <link rel="stylesheet" href="lixeira.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
+    <title>EcoTracker</title>
+  </head>
+
+  <body>
+
+    <!--PARTE DO CABE-->
+
+    <div class="cabecalho">
+        <div class="cabecalho-icone-titulo">
+          <div class="icone_cabecalho">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-recycle h-8 w-8 text-white">
+              <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"></path>
+              <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"></path>
+              <path d="m14 16-3 3 3 3"></path>
+              <path d="M8.293 13.596 7.196 9.5 3.1 10.598"></path>
+              <path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"></path>
+              <path d="m13.378 9.633 4.096 1.098 1.097-4.096"></path>
+              </svg>
+          </div>
+            <div id="siteName">
+            <span  class="texto_cabecalho">EcoTracker</span>
+            <span  class="texto_info">Sistema de Monitoramento de Resíduos</span>
+            </div>
+        </div>
+    </div>
+    <!--PARTE DA CAM-->
     
- <svg class="lucide lucide-recycle" width="48" height="48" fill="green" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"></svg>
 
-</body>
-</html>
+    <div id="cam_infos">
 
+      <div id="back_camera">
+        <p id="titulo_cam" class="d-flex justify-content-between">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-camera h-5 w-5">
+            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+            <circle cx="12" cy="13" r="3"></circle>
+            </svg>
+            Câmera ESP32 - Coleta em Tempo Real
+          </span>
+          <span id="bluetooth"></span><!--VAI MUDAR NO JS PARA O SIMBOLO CORRETO-->
+        </p>
+
+      <div id="camera">
+    <img id="liveFeed" src="/live.jpg" style="width:640px; border:1px solid #000;">
+    <div id="obj_detectado">
+        <h5>Objeto Detectado:</h5>
+        <h6>Nenhum</h6>
+    </div>
+</div>
+
+      </div>
+
+      <!--PARTE DA CAM-->
+  <div id="div_info_coletas">
+      <!--PARTE DOS STATUS-->
+    <div id="status_coleta" class="mb-4">
+      <h5>Status da Coleta</h5>
+      <div id="status_coleta_secundaria" class="d-flex flex-column justify-content-between">   
+      <!-- Linha 1 -->
+        <div class="d-flex justify-content-between">
+          <p>Objetos Detectados Hoje:</p>
+          <p>24</p>
+        </div>
+      <!-- Linha 2 -->
+        <div class="d-flex justify-content-between">
+          <p>Última Detecção:</p>
+          <p>Agora</p>
+        </div>
+      <!-- Linha 3 -->
+        <div class="d-flex justify-content-between">
+          <p>Câmera Ativa:</p>
+          <p>Online</p>
+        </div>
+      </div>
+    </div>
+  
+    <div id="deteccoes_recentes">
+      <h5>Deteccções Recentes</h5>
+      <div id="deteccoes_recentes_secundaria" class="d-flex flex-column justify-content-between">   
+      <!-- Linha 1 -->
+        <div class="d-flex justify-content-between border-bottom">
+          <p>Garrafa Plástica:</p>
+          <p>10:45</p>
+        </div>
+      <!-- Linha 2 -->
+        <div class="d-flex justify-content-between border-bottom"">
+          <p>Lata de Alumínio:</p>
+          <p>10:42</p>
+        </div>
+      <!-- Linha 3 -->
+        <div class="d-flex justify-content-between border-bottom"">
+          <p>Papel:</p>
+          <p>10:39</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div> 
+
+
+    <!--PARTE DOS STATUS-->
+
+    <!--PARTE DOS MAT-->
+
+    <div id="materiais">
+      <div class="materiais" id="metal">
+        <div class="top-part" id="top-part-metal">
+          <div id="cabecalho-materiais" class="d-flex justify-content-between">
+            <h2 class="nome-material">Metal</h2>
+            <span href="" class="icone">🥫</span>
+          </div>
+          <h4 class="numero-itens">14</h4>
+          <h4 class="unidades">Unidades</h4>
+        </div>
+      </div>
+
+      <div class="materiais" id="vidro">
+        <div class="top-part" id="top-part-vidro">
+          <div id="cabecalho-materiais" class="d-flex justify-content-between">
+            <h2 class="nome-material">Vidro</h2>
+            <span href="" class="icone">🍾</span>
+          </div>
+          <h4 class="numero-itens">10</h4>
+          <h4 class="unidades">Unidades</h4>
+        </div>
+      </div>
+
+      <div class="materiais" id="papel">
+        <div class="top-part" id="top-part-papel">
+          <div id="cabecalho-materiais" class="d-flex justify-content-between">
+            <h2 class="nome-material">Papel</h2>
+            <span href="" class="icone">📃</span>
+          </div>
+          <h4 class="numero-itens">12</h4>
+          <h4 class="unidades">Unidades</h4>
+        </div>
+      </div>
+
+      <div class="materiais" id="plastico">
+        <div class="top-part" id="top-part-plastico">
+          <div id="cabecalho-materiais" class="d-flex justify-content-between">
+            <h2 class="nome-material">Plástico</h2>
+            <span href="" class="icone">🥤</span>
+          </div>
+          <h4 class="numero-itens">12</h4>
+          <h4 class="unidades">Unidades</h4>
+        </div>
+      </div>
+    </div>
+
+    <!--PARTE DOS MA-->  <!--PARTE DOS MAT-->
+
+    <script src="lixeira.js"></script>
+    <script>
+    setInterval(() => {
+        const img = document.getElementById('liveFeed');
+        img.src = '/live.jpg?_=' + new Date().getTime();
+    }, 500); // atualiza a cada 0.5s
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"></script>
+  </body>
+
+  </html>
+
+
+  </body>

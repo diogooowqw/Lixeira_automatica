@@ -1,0 +1,197 @@
+body {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    overflow-x: hidden; /* Remove scroll horizontal */
+}
+
+/*CABECALHO*/
+
+.cabecalho {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 32px;
+    width: 100vw;
+    height: auto;
+}
+
+.cabecalho-icone-titulo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+#siteName {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 0;
+}
+
+.icone_cabecalho {
+    padding: 12px; 
+    background-color: #10b981; 
+    border-radius: 9999px;
+    box-shadow: 0 10px 15px -3px rgba(16,185,129,0.1), 0 4px 6px -4px rgba(16,185,129,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+.texto_cabecalho {
+    font-size: 2.5rem; 
+    font-weight: 700; 
+    color: #1e293b;   
+    text-align: center;
+}
+.texto_info {
+    font-size: 1.2rem; 
+    font-weight: 400; 
+    color: #475569;   
+    text-align: center;
+}
+
+
+/*CAM_INFOS*/
+#cam_infos{
+     display: grid;
+     grid-template-columns: 60% 40%;
+     column-gap: 20px;  
+     padding-left: 250px;
+     padding-right: 250px;
+     align-items: start;
+}
+
+#back_camera{
+     background-color: white;
+     border-radius: 20px;
+     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+#obj_detectado {
+    padding: 5px;
+    border-radius: 10px;
+    background-color: black;
+    opacity: 0.9;
+    width: fit-content;
+    height: fit-content;
+    color: rgb(255, 255, 255);
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.12); /* sombra clean e suave */
+}
+
+#titulo_cam{
+    padding: 10px;
+    margin-bottom: 0px;
+}
+
+#camera{
+    position: relative;
+    width: 96%;
+    height: 500px;
+    margin: 0 auto;
+    background: #545454;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+/*CAM_INFOS*/
+
+/*MATERIAIS*/
+
+#materiais{
+    
+    margin: 0 auto;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    height:248px;
+    width: 1280px;
+    color:#FFFFFF;
+    
+}
+.materiais{
+    align-self: center;
+    border-color: transparent;
+    border-radius: 6px;
+    height: 80%;
+    width: 90%;
+    display: flex;
+}
+#metal{
+    border-color: transparent;
+    background-color: #f2d600;
+}
+#papel{
+    border-color: transparent;
+    background-color: #2B7FFF;
+}
+#vidro{
+    border-color: transparent;
+    background-color: #00bc48;
+}
+#plastico{
+    border-color: transparent;
+    background-color: #ff4650;
+}
+.top-part{
+    margin-top: 8%;
+    height: 28px;
+    width: 90%;
+    
+}
+#cabecalho-materiais{
+    margin-inline-start: 20px;
+    height:40px;
+    width: 90%;
+    
+}
+.nome-material{
+    
+    width: 60%;
+    padding: 0px;
+    margin:0px;
+    font-style: bold;
+    font-size: 25px;
+    font-family: var(--font-geist-sans);
+}
+.icone{
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    
+}
+.unidades{
+    padding: 0px;
+    font-size: 18px;
+    font-weight: lighter;
+    margin-inline-start: 20px;
+}
+.numero-itens{
+    margin-top: 5%;
+    font-size: 30px;
+    margin-inline-start: 20px;
+}
+
+/*MATERIAIS*/
+
+/*Status da Coleta*/
+#status_coleta,
+#deteccoes_recentes {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08); /* sombra suave e clean */
+}
+
+#status_coleta_secundaria,
+#deteccoes_recentes_secundaria {
+    background-color: #FFFFFF;
+    padding: 8px;
+    box-shadow: 0 1px 4px rgba(30, 41, 59, 0.06); /* sombra ainda mais leve */
+}
