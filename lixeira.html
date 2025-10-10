@@ -54,13 +54,15 @@
           <span id="bluetooth"></span><!--VAI MUDAR NO JS PARA O SIMBOLO CORRETO-->
         </p>
 
-      <div id="camera">
-    <img id="liveFeed" src="/live.jpg" style="width:640px; border:1px solid #000;">
+<div id="camera"> 
     <div id="obj_detectado">
         <h5>Objeto Detectado:</h5>
         <h6>Nenhum</h6>
     </div>
+    <!-- Feed da ESP32 -->
+    <img id="video" src="" style="width:100%; border:1px solid #000; border-radius:10px;">
 </div>
+
 
       </div>
 
@@ -166,17 +168,25 @@
     <!--PARTE DOS MA-->  <!--PARTE DOS MAT-->
 
     <script src="lixeira.js"></script>
-    <script>
-    setInterval(() => {
-        const img = document.getElementById('liveFeed');
-        img.src = '/live.jpg?_=' + new Date().getTime();
-    }, 500); // atualiza a cada 0.5s
-</script>
+ 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"></script>
   </body>
+  
+<script>
+function iniciarCamera() {
+    const video = document.getElementById('video');
 
+    setInterval(() => {
+        // aponta para o servidor Flask
+        video.src = "http://127.0.0.1:5000/video_feed?" + new Date().getTime();
+    }, 100); // 10fps
+}
+
+window.onload = iniciarCamera;
+
+</script>
   </html>
 
 

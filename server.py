@@ -1,96 +1,59 @@
-import os
-import threading
-from flask import Flask, send_file, render_template_string
-import bluetooth
-
-PASTA_IMAGENS = "uploads_camera"
-os.makedirs(PASTA_IMAGENS, exist_ok=True)
-CAMINHO_IMAGEM = os.path.join(PASTA_IMAGENS, "live.jpg")
+from flask import Flask, Response
+import serial
+import time
 
 app = Flask(__name__)
 
-@app.route("/")
-def index():
-    return render_template_string("""
-    <!DOCTYPE html>
-    <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <title>Live ESP32-CAM</title>
-    </head>
-    <body>
-        <h2>Live da ESP32-CAM via Bluetooth</h2>
-        <img id="liveFeed" src="/live.jpg" style="width:640px; border:1px solid #000;">
-        <script>
-            setInterval(() => {
-                const img = document.getElementById('liveFeed');
-                img.src = '/live.jpg?_=' + new Date().getTime();
-            }, 200); // atualiza a cada 200ms
-        </script>
-    </body>
-    </html>
-    """)
+PORTA = "COM5"
+BAUD = 115200
+CHUNK_SIZE = 1024
 
-@app.route("/live.jpg")
-def live_image():
-    if os.path.exists(CAMINHO_IMAGEM):
-        return send_file(CAMINHO_IMAGEM, mimetype='image/jpeg')
-    return "Nenhuma imagem disponível", 404
-
-# --- Receber imagem via Bluetooth ---
-def receber_bluetooth():
-    server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    server_sock.bind(("", bluetooth.PORT_ANY))
-    server_sock.listen(1)
-    port = server_sock.getsockname()[1]
-    print(f"[Bluetooth] Escutando na porta {port}")
-
-    bluetooth.advertise_service(server_sock, "ESP32CamServer",
-                                service_classes=[bluetooth.SERIAL_PORT_CLASS],
-                                profiles=[bluetooth.SERIAL_PORT_PROFILE])
-    print("[Bluetooth] Serviço anunciado. Aguardando conexão...")
-
-    client_sock, client_info = server_sock.accept()
-    print(f"[Bluetooth] Conectado a {client_info}")
-
-    buffer = b""
-    recebendo = False
-    tamanho_esperado = 0
-
+def gerar_frames():
+    ser = serial.Serial(PORTA, BAUD, timeout=5)
+    ultimo_tempo = time.time()
+    
     while True:
         try:
-            data = client_sock.recv(1024)
-            if not data:
-                continue
-            buffer += data
+            # envia comando para captura
+            ser.write(b"CAPTURE\n")
 
-            # Início da imagem
-            if b"----START IMAGE----" in buffer:
-                recebendo = True
-                buffer = buffer.split(b"----START IMAGE----",1)[1]
-                continue
+            # lê tamanho da imagem
+            tamanho = int(ser.readline().decode().strip().replace("SIZE:", ""))
 
-            # Fim da imagem
-            if b"----END IMAGE----" in buffer and recebendo:
-                img_data = buffer.split(b"----END IMAGE----",1)[0]
-                with open(CAMINHO_IMAGEM, "wb") as f:
-                    f.write(img_data)
-                print("[Bluetooth] Imagem recebida e salva!")
-                buffer = b""
-                recebendo = False
+            # espera START IMAGE
+            while ser.readline().decode().strip() != "----START IMAGE----":
+                pass
+
+            # lê a imagem
+            img_bytes = b""
+            recebido = 0
+            while recebido < tamanho:
+                ler = min(CHUNK_SIZE, tamanho - recebido)
+                chunk = ser.read(ler)
+                img_bytes += chunk
+                recebido += len(chunk)
+
+            # espera END IMAGE
+            while ser.readline().decode().strip() != "----END IMAGE----":
+                pass
+
+            # envia como MJPEG
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + img_bytes + b'\r\n')
+
+            # mede FPS
+            agora = time.time()
+            fps = 1 / (agora - ultimo_tempo)
+            print(f"FPS atual: {fps:.2f}")
+            ultimo_tempo = agora
 
         except Exception as e:
-            print(f"[Bluetooth] Erro: {e}")
-            break
+            print("Erro na captura:", e)
+            continue
 
-    client_sock.close()
-    server_sock.close()
-    print("[Bluetooth] Conexão encerrada")
+@app.route('/video_feed')
+def video_feed():
+    return Response(gerar_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-# --- Thread Bluetooth ---
-bt_thread = threading.Thread(target=receber_bluetooth, daemon=True)
-bt_thread.start()
-
-# --- Executa Flask ---
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="127.0.0.1", port=5000, debug=True)
