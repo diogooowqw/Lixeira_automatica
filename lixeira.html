@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
   <html lang="en">
 
   <head>
@@ -60,7 +60,7 @@
         <h6>Nenhum</h6>
     </div>
     <!-- Feed da ESP32 -->
-    <img id="video" src="" style="width:100%; border:1px solid #000; border-radius:10px;">
+    <img id="video" src="" style="width:100%; border-radius:10px;">
 </div>
 
 
@@ -177,11 +177,15 @@
 <script>
 function iniciarCamera() {
     const video = document.getElementById('video');
+    let cameraAtiva = true; // Troque para false quando desativada
 
-    setInterval(() => {
-        // aponta para o servidor Flask
-        video.src = "http://127.0.0.1:5000/video_feed?" + new Date().getTime();
-    }, 100); // 10fps
+    if (cameraAtiva) {
+        setInterval(() => {
+            video.src = "http://127.0.0.1:5000/video_feed?" + new Date().getTime();
+        }, 500); // 20fps
+    } else {
+        video.src = "img/camera_off.svg"; // Coloque uma imagem estática de câmera desligada
+    }
 }
 
 window.onload = iniciarCamera;
