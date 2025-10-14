@@ -1,7 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
     overflow-x: hidden; /* Remove scroll horizontal */
+    width: 100vw;
+    height: 100vh;
 }
 
 /*CABECALHO*/
@@ -11,7 +20,7 @@ body {
     justify-content: center;
     align-items: center;
     margin-top: 20px;
-    margin-bottom: 32px;
+    margin-bottom: 50px;
     width: 100vw;
     height: auto;
 }
@@ -20,21 +29,22 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 16px;
+    gap: 15px;
 }
 #siteName {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    margin-top: 0;
+    gap: 0px;
+    margin: 0px;
 }
 
 .icone_cabecalho {
-    padding: 12px; 
+    padding: 15px; 
     background-color: #10b981; 
     border-radius: 9999px;
-    box-shadow: 0 10px 15px -3px rgba(16,185,129,0.1), 0 4px 6px -4px rgba(16,185,129,0.1);
+    box-shadow: 0 10px 15px -3px rgba(16,185,129,0.2), 0 4px 6px -4px rgba(16,185,129,0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -45,6 +55,7 @@ body {
     font-weight: 700; 
     color: #1e293b;   
     text-align: center;
+    padding-bottom: 0px,
 }
 .texto_info {
     font-size: 1.2rem; 
@@ -53,52 +64,191 @@ body {
     text-align: center;
 }
 
+#div_pai_Central{
+    width: 82%;
+    margin-left: 9%;
+    margin-right: 9%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+ 
+}
 
 /*CAM_INFOS*/
 #cam_infos{
      display: grid;
-     grid-template-columns: 60% 40%;
-     column-gap: 20px;  
-     padding-left: 250px;
-     padding-right: 250px;
-     align-items: start;
+     grid-template-columns: 65% 35%;
 }
 
 #back_camera{
      background-color: white;
-     border-radius: 20px;
-     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+     border-radius: 10px;
+     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+     width: 98%;
+     margin-left: 0.5%;
+     display: flex;
+     flex-direction: column;
     }
 
-#obj_detectado {
-    padding: 5px;
-    border-radius: 10px;
+#title_Cam {
+    display: flex;
+    flex-direction: row;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    color: rgb(40, 53, 71);
+    padding-left: 10px;
+    align-items: center;
+    font-size: 18px;
+}
+#icon_Cam{
+    margin-right: 10px;
+    align-items: center;
+}
+#text_Cam{ 
+    font-weight: 600;
+    align-items: center;
+    justify-content: center;
+}
+#bluetooth{
     background-color: black;
-    opacity: 0.9;
-    width: fit-content;
-    height: fit-content;
-    color: rgb(255, 255, 255);
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.12); /* sombra clean e suave */
-}
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: 10px;
+    gap: 5px;
+    padding: 2px;
+    padding-right: 10px;
+    padding-left: 10px;
 
-#titulo_cam{
-    padding: 10px;
-    margin-bottom: 0px;
 }
-
+#text_WIFI{
+    font-size: 14px;
+    font-weight: 600;
+    align-items: center;
+    text-align: center;
+}
 #camera{
     position: relative;
-    width: 96%;
-    height: 500px;
-    margin: 0 auto;
-    background: #545454;
+    width: 95%;
+    height: 490px;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    background: #c0c0c0;
     border-radius: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
+#obj_detectado {
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    padding-right: 20px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.85);
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    color: rgb(255, 255, 255);
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.12); /* sombra clean e suave */
+}
+#title_objdtc{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 15px;
+    font-weight: 500;
+    width: 100%;
+    color:rgba(242, 255, 255, 1) 
+}
+#name_Objeto{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 20px;
+    font-weight: 700;
+    width: 100%;
+    color: rgba(255, 255, 255, 1);
+}
+
+#div_info_coletas{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 30px;
+}
+
+#status_Coleta, #deteccoes_Recentes{
+    background-color: white;
+    width: 100%;
+    max-width: 100%; 
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    
+}
+.infoStatus{
+    display: flex;
+    flex-direction: column;
+    padding-left: 25px;
+    padding-right: 25px;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+.title_Status{
+    font-size: 18px;
+    font-weight: 700;
+    color: black;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.textStatus{
+    color: rgb(53, 53, 53);
+}
+.oneInfo{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+.numStatus{
+    color: rgb(40, 53, 71);
+    font-weight: 700;
+    font-size: 18px;
+    margin-left: auto;
+}
+
+#estadoCam{
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 2px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+#infoCam{
+    font-size: 14px;
+    font-weight: 600;
+    align-items: center;
+    text-align: center;
+}
+
+.horas{
+    margin-left: auto;
+    font-size: 15px;
+    color: rgb(128, 128, 128);
+}
 /*CAM_INFOS*/
 
 /*MATERIAIS*/
@@ -181,17 +331,3 @@ body {
 /*MATERIAIS*/
 
 /*Status da Coleta*/
-#status_coleta,
-#deteccoes_recentes {
-    background-color: #FFFFFF;
-    border-radius: 20px;
-    padding: 8px;
-    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08); /* sombra suave e clean */
-}
-
-#status_coleta_secundaria,
-#deteccoes_recentes_secundaria {
-    background-color: #FFFFFF;
-    padding: 8px;
-    box-shadow: 0 1px 4px rgba(30, 41, 59, 0.06); /* sombra ainda mais leve */
-}

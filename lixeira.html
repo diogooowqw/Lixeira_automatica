@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="lixeira.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    </style>
+
     <title>EcoTracker</title>
   </head>
 
@@ -37,82 +41,86 @@
     </div>
     <!--PARTE DA CAM-->
     
+<div id="div_pai_Central">
+    
+  <div id="cam_infos">
+      
+    <div id="back_camera">
 
-    <div id="cam_infos">
-
-      <div id="back_camera">
-        <p id="titulo_cam" class="d-flex justify-content-between">
-          <span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        <div id="title_Cam">
+          <div id="icon_Cam">
+             <div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             class="lucide lucide-camera h-5 w-5">
             <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
             <circle cx="12" cy="13" r="3"></circle>
-            </svg>
-            Câmera ESP32 - Coleta em Tempo Real
-          </span>
-          <span id="bluetooth"></span><!--VAI MUDAR NO JS PARA O SIMBOLO CORRETO-->
-        </p>
+            </svg></div>
+           </div>
 
-<div id="camera"> 
-    <div id="obj_detectado">
-        <h5>Objeto Detectado:</h5>
-        <h6>Nenhum</h6>
+          <div id="text_Cam">Câmera ESP32 - Coleta em Tempo Real</div>
+
+          <div id="bluetooth"> 
+             <div id="text_WIFI">Conectado</div>
+          </div><!--VAI MUDAR NO JS PARA O SIMBOLO CORRETO-->
+        </div>
+
+        <div id="camera"> 
+                <div id="obj_detectado">
+                    <div id="title_objdtc">Objeto Detectado:</div>
+                    <div id="name_Objeto">Nenhum</div>
+                </div>
+                <!-- Feed da ESP32 -->
+                <img id="video" src="" style="width: 100%; border-radius:10px;height:490px ;">
+            </div>
     </div>
-    <!-- Feed da ESP32 -->
-    <img id="video" src="" style="width:100%; border-radius:10px;">
-</div>
-
-
-      </div>
 
       <!--PARTE DA CAM-->
   <div id="div_info_coletas">
       <!--PARTE DOS STATUS-->
-    <div id="status_coleta" class="mb-4">
-      <h5>Status da Coleta</h5>
-      <div id="status_coleta_secundaria" class="d-flex flex-column justify-content-between">   
-      <!-- Linha 1 -->
-        <div class="d-flex justify-content-between">
-          <p>Objetos Detectados Hoje:</p>
-          <p>24</p>
+    <div id="status_Coleta"> 
+
+      <div class='title_Status'>Status de Coleta</div>
+      <div class="infoStatus">
+        <div id="num_Dtc" class="oneInfo">
+            <div id="text_objDtc" class="textStatus">Objetos Detectados Hoje:</div>
+            <div id='objetosDetectados' class="numStatus">05</div>
         </div>
-      <!-- Linha 2 -->
-        <div class="d-flex justify-content-between">
-          <p>Última Detecção:</p>
-          <p>Agora</p>
+         <div id="last_Dtc" class="oneInfo">
+            <div id="text_lastDtc" class="textStatus">Última detecção:</div>
+            <div id='horaLastDtc' class="numStatus">2 horas</div>
         </div>
-      <!-- Linha 3 -->
-        <div class="d-flex justify-content-between">
-          <p>Câmera Ativa:</p>
-          <p>Online</p>
+         <div id="state_Cam" class="oneInfo">
+            <div id="text_stateCam" class="textStatus">Câmera Ativa:</div>
+            <div id='estadoCam' class="numStatus"><div id="infoCam">Offline</div></div>
         </div>
       </div>
+
     </div>
+
+    <div id="deteccoes_Recentes"> 
+
+      <div class='title_Status'>Detecções Recentes</div>
+      <div class="infoStatus">
+        <div id="last_Obj" class="oneInfo">
+            <div id="nameLast_Obj" class="textStatus">Plástico</div>
+            <div id='last_Time' class="horas">23:43</div>
+        </div>
+         <div id="penult_Obj" class="oneInfo">
+            <div id="namePenult_Obj" class="textStatus">Lata</div>
+            <div id='penult_Time' class="horas">16:29</div>
+        </div>
+         <div id="antepenult_Obj" class="oneInfo">
+            <div id="nameAntepenult_Obj" class="textStatus">Papel</div>
+            <div id='antepenult_Time' class="horas">13:43</div>
+        </div>
+      </div>
+
+    </div>
+
   
-    <div id="deteccoes_recentes">
-      <h5>Deteccções Recentes</h5>
-      <div id="deteccoes_recentes_secundaria" class="d-flex flex-column justify-content-between">   
-      <!-- Linha 1 -->
-        <div class="d-flex justify-content-between border-bottom">
-          <p>Garrafa Plástica:</p>
-          <p>10:45</p>
-        </div>
-      <!-- Linha 2 -->
-        <div class="d-flex justify-content-between border-bottom"">
-          <p>Lata de Alumínio:</p>
-          <p>10:42</p>
-        </div>
-      <!-- Linha 3 -->
-        <div class="d-flex justify-content-between border-bottom"">
-          <p>Papel:</p>
-          <p>10:39</p>
-        </div>
-      </div>
-    </div>
+  </div>
   </div>
 
-  </div> 
 
 
     <!--PARTE DOS STATUS-->
@@ -165,6 +173,7 @@
       </div>
     </div>
 
+  </div>
     <!--PARTE DOS MA-->  <!--PARTE DOS MAT-->
 
     <script src="lixeira.js"></script>
@@ -174,23 +183,16 @@
       crossorigin="anonymous"></script>
   </body>
   
-<script>
-function iniciarCamera() {
-    const video = document.getElementById('video');
-    let cameraAtiva = true; // Troque para false quando desativada
+   <script>
+        function iniciarCamera() {
+            const video = document.getElementById('video');
+            // aponta diretamente para o MJPEG do Flask
+            video.src = "http://127.0.0.1:5000/video_feed";
+        }
 
-    if (cameraAtiva) {
-        setInterval(() => {
-            video.src = "http://127.0.0.1:5000/video_feed?" + new Date().getTime();
-        }, 500); // 20fps
-    } else {
-        video.src = "img/camera_off.svg"; // Coloque uma imagem estática de câmera desligada
-    }
-}
-
-window.onload = iniciarCamera;
-
-</script>
+        // inicia ao carregar a página
+        window.onload = iniciarCamera;
+    </script>
   </html>
 
 
