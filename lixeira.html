@@ -1,199 +1,173 @@
 <!DOCTYPE html>
-  <html lang="en">
-
-  <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="lixeira.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
     </style>
-
     <title>EcoTracker</title>
-  </head>
-
-  <body>
-
+</head>
+<body>
     <!--PARTE DO CABE-->
-
     <div class="cabecalho">
         <div class="cabecalho-icone-titulo">
-          <div class="icone_cabecalho">
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="lucide lucide-recycle h-8 w-8 text-white">
-              <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"></path>
-              <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"></path>
-              <path d="m14 16-3 3 3 3"></path>
-              <path d="M8.293 13.596 7.196 9.5 3.1 10.598"></path>
-              <path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"></path>
-              <path d="m13.378 9.633 4.096 1.098 1.097-4.096"></path>
-              </svg>
-          </div>
+            <div class="icone_cabecalho">
+                <!-- SVG do ícone -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-recycle h-8 w-8 text-white">
+                    <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"></path>
+                    <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"></path>
+                    <path d="m14 16-3 3 3 3"></path>
+                    <path d="M8.293 13.596 7.196 9.5 3.1 10.598"></path>
+                    <path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"></path>
+                    <path d="m13.378 9.633 4.096 1.098 1.097-4.096"></path>
+                </svg>
+            </div>
             <div id="siteName">
-            <span  class="texto_cabecalho">EcoTracker</span>
-            <span  class="texto_info">Sistema de Monitoramento de Resíduos</span>
+                <span class="texto_cabecalho">EcoTracker</span>
+                <span class="texto_info">Sistema de Monitoramento de Resíduos</span>
             </div>
         </div>
     </div>
     <!--PARTE DA CAM-->
-    
-<div id="div_pai_Central">
-    
-  <div id="cam_infos">
-      
-    <div id="back_camera">
-
-        <div id="title_Cam">
-          <div id="icon_Cam">
-             <div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-camera h-5 w-5">
-            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
-            <circle cx="12" cy="13" r="3"></circle>
-            </svg></div>
-           </div>
-
-          <div id="text_Cam">Câmera ESP32 - Coleta em Tempo Real</div>
-
-          <div id="bluetooth"> 
-             <div id="text_WIFI">Conectado</div>
-          </div><!--VAI MUDAR NO JS PARA O SIMBOLO CORRETO-->
-        </div>
-
-        <div id="camera"> 
-                <div id="obj_detectado">
-                    <div id="title_objdtc">Objeto Detectado:</div>
-                    <div id="name_Objeto">Nenhum</div>
+    <div id="div_pai_Central">
+        <div id="cam_infos">
+            <div id="back_camera">
+                <div id="title_Cam">
+                    <div id="icon_Cam">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-camera h-5 w-5">
+                                <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                                <circle cx="12" cy="13" r="3"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                    <div id="text_Cam">Câmera ESP32 - Coleta em Tempo Real</div>
+                    <div id="bluetooth">
+                        <div id="text_WIFI">Conectado</div>
+                    </div>
                 </div>
-                <!-- Feed da ESP32 -->
-                <img id="video" src="" style="width: 100%; border-radius:10px;height:490px ;">
+                <div id="camera">
+                    <div id="obj_detectado">
+                        <div id="title_objdtc">Objeto Detectado:</div>
+                        <div id="name_Objeto">Nenhum</div>
+                    </div>
+                    <!-- Feed da ESP32 -->
+                    <img id="video" src="" style="width: 100%; border-radius:10px; height:490px;">
+                </div>
             </div>
+            <div id="div_info_coletas">
+                <!--PARTE DOS STATUS-->
+                <div id="status_Coleta">
+                    <div class='title_Status'>Status de Coleta</div>
+                    <div class="infoStatus">
+                        <div id="num_Dtc" class="oneInfo">
+                            <div id="text_objDtc" class="textStatus">Objetos Detectados Hoje:</div>
+                            <div id='objetosDetectados' class="numStatus">05</div>
+                        </div>
+                        <div id="last_Dtc" class="oneInfo">
+                            <div id="text_lastDtc" class="textStatus">Última detecção:</div>
+                            <div id='horaLastDtc' class="numStatus">2 horas</div>
+                        </div>
+                        <div id="state_Cam" class="oneInfo">
+                            <div id="text_stateCam" class="textStatus">Câmera Ativa:</div>
+                            <div id='estadoCam' class="numStatus"><div id="infoCam">Offline</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="deteccoes_Recentes">
+                    <div class='title_Status'>Detecções Recentes</div>
+                    <div class="infoStatus">
+                        <div id="last_Obj" class="oneInfo">
+                            <div id="nameLast_Obj" class="textStatus">Plástico</div>
+                            <div id='last_Time' class="horas">23:43</div>
+                        </div>
+                        <div id="penult_Obj" class="oneInfo">
+                            <div id="namePenult_Obj" class="textStatus">Lata</div>
+                            <div id='penult_Time' class="horas">16:29</div>
+                        </div>
+                        <div id="antepenult_Obj" class="oneInfo">
+                            <div id="nameAntepenult_Obj" class="textStatus">Papel</div>
+                            <div id='antepenult_Time' class="horas">13:43</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--PARTE DOS MATERIAIS-->
+        <div id="materiais">
+            <div class="materiais" id="metal">
+                <div class="top-part" id="top-part-metal">
+                    <div id="cabecalho-materiais" class="d-flex justify-content-between">
+                        <h2 class="nome-material">Metal</h2>
+                        <span class="icone">🥫</span>
+                    </div>
+                    <h4 class="numero-itens">14</h4>
+                    <h4 class="unidades">Unidades</h4>
+                </div>
+            </div>
+            <div class="materiais" id="vidro">
+                <div class="top-part" id="top-part-vidro">
+                    <div id="cabecalho-materiais" class="d-flex justify-content-between">
+                        <h2 class="nome-material">Vidro</h2>
+                        <span class="icone">🍾</span>
+                    </div>
+                    <h4 class="numero-itens">10</h4>
+                    <h4 class="unidades">Unidades</h4>
+                </div>
+            </div>
+            <div class="materiais" id="papel">
+                <div class="top-part" id="top-part-papel">
+                    <div id="cabecalho-materiais" class="d-flex justify-content-between">
+                        <h2 class="nome-material">Papel</h2>
+                        <span class="icone">📃</span>
+                    </div>
+                    <h4 class="numero-itens">12</h4>
+                    <h4 class="unidades">Unidades</h4>
+                </div>
+            </div>
+            <div class="materiais" id="plastico">
+                <div class="top-part" id="top-part-plastico">
+                    <div id="cabecalho-materiais" class="d-flex justify-content-between">
+                        <h2 class="nome-material">Plástico</h2>
+                        <span class="icone">🥤</span>
+                    </div>
+                    <h4 class="numero-itens">12</h4>
+                    <h4 class="unidades">Unidades</h4>
+                </div>
+            </div>
+        </div>
     </div>
-
-      <!--PARTE DA CAM-->
-  <div id="div_info_coletas">
-      <!--PARTE DOS STATUS-->
-    <div id="status_Coleta"> 
-
-      <div class='title_Status'>Status de Coleta</div>
-      <div class="infoStatus">
-        <div id="num_Dtc" class="oneInfo">
-            <div id="text_objDtc" class="textStatus">Objetos Detectados Hoje:</div>
-            <div id='objetosDetectados' class="numStatus">05</div>
-        </div>
-         <div id="last_Dtc" class="oneInfo">
-            <div id="text_lastDtc" class="textStatus">Última detecção:</div>
-            <div id='horaLastDtc' class="numStatus">2 horas</div>
-        </div>
-         <div id="state_Cam" class="oneInfo">
-            <div id="text_stateCam" class="textStatus">Câmera Ativa:</div>
-            <div id='estadoCam' class="numStatus"><div id="infoCam">Offline</div></div>
-        </div>
-      </div>
-
-    </div>
-
-    <div id="deteccoes_Recentes"> 
-
-      <div class='title_Status'>Detecções Recentes</div>
-      <div class="infoStatus">
-        <div id="last_Obj" class="oneInfo">
-            <div id="nameLast_Obj" class="textStatus">Plástico</div>
-            <div id='last_Time' class="horas">23:43</div>
-        </div>
-         <div id="penult_Obj" class="oneInfo">
-            <div id="namePenult_Obj" class="textStatus">Lata</div>
-            <div id='penult_Time' class="horas">16:29</div>
-        </div>
-         <div id="antepenult_Obj" class="oneInfo">
-            <div id="nameAntepenult_Obj" class="textStatus">Papel</div>
-            <div id='antepenult_Time' class="horas">13:43</div>
-        </div>
-      </div>
-
-    </div>
-
-  
-  </div>
-  </div>
-
-
-
-    <!--PARTE DOS STATUS-->
-
-    <!--PARTE DOS MAT-->
-
-    <div id="materiais">
-      <div class="materiais" id="metal">
-        <div class="top-part" id="top-part-metal">
-          <div id="cabecalho-materiais" class="d-flex justify-content-between">
-            <h2 class="nome-material">Metal</h2>
-            <span href="" class="icone">🥫</span>
-          </div>
-          <h4 class="numero-itens">14</h4>
-          <h4 class="unidades">Unidades</h4>
-        </div>
-      </div>
-
-      <div class="materiais" id="vidro">
-        <div class="top-part" id="top-part-vidro">
-          <div id="cabecalho-materiais" class="d-flex justify-content-between">
-            <h2 class="nome-material">Vidro</h2>
-            <span href="" class="icone">🍾</span>
-          </div>
-          <h4 class="numero-itens">10</h4>
-          <h4 class="unidades">Unidades</h4>
-        </div>
-      </div>
-
-      <div class="materiais" id="papel">
-        <div class="top-part" id="top-part-papel">
-          <div id="cabecalho-materiais" class="d-flex justify-content-between">
-            <h2 class="nome-material">Papel</h2>
-            <span href="" class="icone">📃</span>
-          </div>
-          <h4 class="numero-itens">12</h4>
-          <h4 class="unidades">Unidades</h4>
-        </div>
-      </div>
-
-      <div class="materiais" id="plastico">
-        <div class="top-part" id="top-part-plastico">
-          <div id="cabecalho-materiais" class="d-flex justify-content-between">
-            <h2 class="nome-material">Plástico</h2>
-            <span href="" class="icone">🥤</span>
-          </div>
-          <h4 class="numero-itens">12</h4>
-          <h4 class="unidades">Unidades</h4>
-        </div>
-      </div>
-    </div>
-
-  </div>
-    <!--PARTE DOS MA-->  <!--PARTE DOS MAT-->
-
     <script src="lixeira.js"></script>
- 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"></script>
-  </body>
-  
-   <script>
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script>
         function iniciarCamera() {
             const video = document.getElementById('video');
-            // aponta diretamente para o MJPEG do Flask
             video.src = "http://127.0.0.1:5000/video_feed";
         }
-
-        // inicia ao carregar a página
         window.onload = iniciarCamera;
+
+        // Atualiza o nome do objeto detectado
+        function atualizarNomeObjeto() {
+            fetch('http://127.0.0.1:5000/analisar_material')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('name_Objeto').textContent = data.objeto;
+                })
+                .catch(() => {
+                    document.getElementById('name_Objeto').textContent = "Nenhum";
+                });
+        }
+        setInterval(atualizarNomeObjeto, 5000);
     </script>
-  </html>
-
-
-  </body>
+</body>
+</html>
