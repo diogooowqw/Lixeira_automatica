@@ -3,7 +3,7 @@ from google import genai
 GEMINI_API_KEY = "AIzaSyBBTfQ9OEBJUFQM7qJ7sjOawF4JkPl_npA"
 client = genai.Client(api_key=GEMINI_API_KEY)
 
-image_path = "C:/Users/lucas/Documents/IA/meta.jpg" 
+image_path = "C:/Users/diogo/OneDrive/Imagens/Documentos/Lixeira_automatica/temp.jpg" 
 
 try:
     my_file = client.files.upload(file=image_path)

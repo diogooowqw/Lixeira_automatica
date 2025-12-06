@@ -46,7 +46,7 @@ bool initCamera() {
     config.pin_reset = RESET_GPIO_NUM;
 
     config.xclk_freq_hz = 20000000;
-    config.pixel_format = PIXFORMAT_JPEG;
+    config.pixel_format = PIXFORMAT_JPEG; 
     config.frame_size = FRAMESIZE_VGA; // 640x480 (ótimo equilíbrio)
     config.jpeg_quality = 35;          // qualidade boa (~60–80 KB)
     config.fb_count = 2;
