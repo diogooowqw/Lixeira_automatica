@@ -15,7 +15,7 @@ try:
      "dentre plástico, papel, vidro, metal e, caso nenhum se aplique, "
      "responda nenhuma das opções, de objetos presentes em imagens fornecidas, "
      "sua resposta deve ser apenas o numero referente ao material "
-     "(metal=1 vidro=2 papel=3 plastico=4 e nenhuma das opções=5). Fale o que é o material no final (exemplo: lapis, dinheiro, etc). "],
+     "(metal=1 vidro=2 papel=3 plastico=4 e nenhuma das opções=5). Fale o que é o material no final (exemplo: lapis, dinheiro, etc)."],
     )
     print(response.text)#NAO APAGA ESSE PROMPT GUYS
 finally:

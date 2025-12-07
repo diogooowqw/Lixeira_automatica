@@ -128,10 +128,16 @@ def ia_olhar():
         response = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=[my_file,
-                      "Você deve identificar o material do objeto presente na imagem, " 
-                      "dentre plástico, papel, vidro, metal e, caso nenhum se aplique, "
-                      "responda vazio. Sua resposta deve ser apenas o numero referente ao material "
-                      "(metal=1 vidro=2 papel=3 plastico=4 e vazio=5)."
+                    "Analise a imagem enviada e identifique o material do objeto presente **somente no centro da imagem**. "
+                    "Ignore bordas, reflexos e cores do chão ou fundo. "
+                    "Se não houver nenhum objeto visível no centro, considere como vazio. "
+                    "Se houver um objeto, identifique seu material dentre: plástico, papel, vidro, metal. "
+                    "Sua resposta deve ser **apenas o número correspondente ao material**: "
+                    "(metal=1, vidro=2, papel=3, plástico=4, vazio=5). "
+                    "Após o número, informe o nome do objeto com detalhes (ex: lápis, garrafa, moeda). "
+                    
+                    "Se não houver objeto, apenas retorne 5."
+
                       ]
         )
         print("📥 Resposta Gemini:", response.text)
