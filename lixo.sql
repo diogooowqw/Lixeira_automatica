@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS lixo;
+
 CREATE TABLE `lixocoletado` (
     `id` int NOT NULL AUTO_INCREMENT,
     `data` date NOT NULL,
@@ -6,3 +8,4 @@ CREATE TABLE `lixocoletado` (
     PRIMARY KEY (`id`)
 )
 USE lixo; -- ou o nome do banco configurado no db.js
+

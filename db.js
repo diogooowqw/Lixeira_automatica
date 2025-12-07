@@ -1,6 +1,5 @@
 const mysql = require('mysql2');
 
-// Use environment variables when available, otherwise sensible defaults
 const conexao = mysql.createConnection({
   host: 'localhost',
   user: 'root',

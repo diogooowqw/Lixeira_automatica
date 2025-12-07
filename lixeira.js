@@ -18,20 +18,14 @@ else {
   <div id="text_WIFI">Conectando</div>`
 }
 
-/**
- * Parse uma string em várias formas para um objeto Date.
- * Aceita formatos: "DD/MM/YYYY HH:MM:SS", "YYYY-MM-DD HH:MM:SS",
- * "DD/MM/YYYY", "YYYY-MM-DD", "HH:MM:SS" (hora apenas -> hoje).
- */
 function parseToDate(input) {
   if (!input) return null;
   if (input instanceof Date) return input;
   const str = String(input).trim();
 
-  // Contains both date and time separated by space
+
   if (str.includes(' ')) {
     const [left, right] = str.split(' ');
-    // left can be DD/MM/YYYY or YYYY-MM-DD
     if (left.includes('/')) {
       const [d, m, y] = left.split('/').map(Number);
       const [h = 0, mi = 0, s = 0] = (right || '').split(':').map(Number);
@@ -44,7 +38,6 @@ function parseToDate(input) {
     }
   }
 
-  // Date only formats
   if (str.includes('/')) {
     const [d, m, y] = str.split('/').map(Number);
     return new Date(y, (m - 1), d);
@@ -54,7 +47,6 @@ function parseToDate(input) {
     return new Date(y, (m - 1), d);
   }
 
-  // Time only: HH:MM or HH:MM:SS -> use today's date
   if (str.includes(':')) {
     const [h = 0, mi = 0, s = 0] = str.split(':').map(Number);
     const now = new Date();
@@ -64,10 +56,7 @@ function parseToDate(input) {
   return null;
 }
 
-/**
- * Calcula diferença entre duas datas/horários informados em formatos variados.
- * Retorna string legível como "3h 20min" ou "Agora" ou mensagem de erro.
- */
+
 function calcularDiferenca(valorInicio, valorFim) {
   const d1 = parseToDate(valorInicio);
   const d2 = parseToDate(valorFim);

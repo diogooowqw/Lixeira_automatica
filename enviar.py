@@ -4,6 +4,7 @@ import threading
 from datetime import datetime
 from google import genai
 from flask import Flask, Response
+import requests
 
 # ---------------- CONFIGURAÇÕES ---------------- #
 BT_PORT = "COM5"        # Porta Bluetooth ou Serial do Arduino/ESP32
@@ -12,6 +13,7 @@ CHUNK_SIZE = 1024
 TIMEOUT = 5
 INTERVALO_CAPTURA = 0.05  # intervalo entre capturas rápidas
 PAUSA_DEPOIS = 10         # pausa após enviar resultado para IA
+API_BASE_URL = "http://localhost:3000"  # URL da API Node.js
 
 # Serial para comunicação com Arduino via Bluetooth
 ser = serial.Serial(BT_PORT, BAUD, timeout=0.2)
@@ -126,15 +128,43 @@ def ia_olhar():
         )
         print("📥 Resposta Gemini:", response.text)
          
-        # Retorna o primeiro número válido
+        # Extrai o primeiro número válido
+        numero = None
         for c in response.text:
             if c in "12345":
-                return c
-        return "5"  # vazio se não encontrar
+                numero = c
+                break
+        
+        if numero is None:
+            numero = "5"  # vazio se não encontrar
+
+        # Envia para o banco de dados via API
+        enviar_para_banco(numero)
+        
+        return numero
 
     finally:
         if 'my_file' in locals():
             client.files.delete(name=my_file.name)
+
+
+# Função para enviar o resultado para o banco de dados
+def enviar_para_banco(numero):
+    try:
+        payload = {"numero": numero}
+        response = requests.post(f"{API_BASE_URL}/api/inserir-coleta-ia", json=payload)
+        
+        if response.status_code == 201:
+            resultado = response.json()
+            print(f"✅ Inserido no banco: {resultado['tipo']} (ID: {resultado['id']})")
+        elif response.status_code == 200:
+            resultado = response.json()
+            if not resultado.get('sucesso'):
+                print(f"⚠️ {resultado.get('mensagem', 'Material não detectado')}")
+        else:
+            print(f"❌ Erro ao enviar para banco: {response.status_code} - {response.text}")
+    except Exception as e:
+        print(f"❌ Erro na requisição para a API: {e}")
 
 
 # ---------------- THREAD AUTOMÁTICA DE CAPTURA ---------------- #
@@ -147,16 +177,19 @@ def thread_auto_captura():
 
         if contador == 20:  # A cada 20 capturas
             contador = 0
-            numero = ia_olhar()  # chama IA
+            numero = ia_olhar()  # chama IA e envia para banco
 
-            # Envia número para Arduino via Bluetooth
-            if numero:
+            # Envia número para Arduino via Bluetooth (opcional, para controlar o carrinho)
+            if numero and numero != "5":
                 ser.write((numero + "\n").encode())
                 print(f"➡️ Número enviado para Arduino: {numero}")
 
-            # Pausa para carrinho jogar o lixo
-            print(f"⏱ Aguardando {PAUSA_DEPOIS}s para o carrinho jogar o lixo...")
-            time.sleep(PAUSA_DEPOIS)
+                # Pausa para carrinho jogar o lixo
+                print(f"⏱ Aguardando {PAUSA_DEPOIS}s para o carrinho jogar o lixo...")
+                time.sleep(PAUSA_DEPOIS)
+            else:
+                print("⏭️ Nenhum material detectado, continuando...")
+                time.sleep(1)
 
 
 # ---------------- MAIN ---------------- #
