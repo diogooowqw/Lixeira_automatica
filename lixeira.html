@@ -70,11 +70,11 @@
                     <div class="infoStatus">
                         <div id="num_Dtc" class="oneInfo">
                             <div id="text_objDtc" class="textStatus">Objetos Detectados Hoje:</div>
-                            <div id='objetosDetectados' class="numStatus">05</div>
+                            <div id='objetosDetectados' class="numStatus"></div>
                         </div>
                         <div id="last_Dtc" class="oneInfo">
                             <div id="text_lastDtc" class="textStatus">Última detecção:</div>
-                            <div id='horaLastDtc' class="numStatus">2 horas</div>
+                            <div id='horaLastDtc' class="numStatus"></div>
                         </div>
                         <div id="state_Cam" class="oneInfo">
                             <div id="text_stateCam" class="textStatus">Câmera Ativa:</div>
@@ -86,16 +86,16 @@
                     <div class='title_Status'>Detecções Recentes</div>
                     <div class="infoStatus">
                         <div id="last_Obj" class="oneInfo">
-                            <div id="nameLast_Obj" class="textStatus">Plástico</div>
-                            <div id='last_Time' class="horas">23:43</div>
+                            <div id="nameLast_Obj" class="textStatus"></div>
+                            <div id='last_Time' class="horas"></div>
                         </div>
                         <div id="penult_Obj" class="oneInfo">
-                            <div id="namePenult_Obj" class="textStatus">Lata</div>
-                            <div id='penult_Time' class="horas">16:29</div>
+                            <div id="namePenult_Obj" class="textStatus"></div>
+                            <div id='penult_Time' class="horas"></div>
                         </div>
                         <div id="antepenult_Obj" class="oneInfo">
-                            <div id="nameAntepenult_Obj" class="textStatus">Papel</div>
-                            <div id='antepenult_Time' class="horas">13:43</div>
+                            <div id="nameAntepenult_Obj" class="textStatus"></div>
+                            <div id='antepenult_Time' class="horas"></div>
                         </div>
                     </div>
                 </div>
@@ -109,7 +109,7 @@
                         <h2 class="nome-material">Metal</h2>
                         <span class="icone">🥫</span>
                     </div>
-                    <h4 class="numero-itens">14</h4>
+                    <h4 class="numero-itens" id="numero_itens_metal"></h4>
                     <h4 class="unidades">Unidades</h4>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                         <h2 class="nome-material">Vidro</h2>
                         <span class="icone">🍾</span>
                     </div>
-                    <h4 class="numero-itens">10</h4>
+                    <h4 class="numero-itens" id="numero_itens_vidro"></h4>
                     <h4 class="unidades">Unidades</h4>
                 </div>
             </div>
@@ -129,7 +129,7 @@
                         <h2 class="nome-material">Papel</h2>
                         <span class="icone">📃</span>
                     </div>
-                    <h4 class="numero-itens">12</h4>
+                    <h4 class="numero-itens" id="numero_itens_papel"></h4>
                     <h4 class="unidades">Unidades</h4>
                 </div>
             </div>
@@ -139,35 +139,32 @@
                         <h2 class="nome-material">Plástico</h2>
                         <span class="icone">🥤</span>
                     </div>
-                    <h4 class="numero-itens">12</h4>
+                    <h4 class="numero-itens" id="numero_itens_plastico"></h4>
                     <h4 class="unidades">Unidades</h4>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Carrega o controlador (API client) -->
+    <script src="controller.js"></script>
     <script src="lixeira.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     <script>
+        // Iniciar câmera e carregar dados
         function iniciarCamera() {
             const video = document.getElementById('video');
             video.src = "http://127.0.0.1:5000/video_feed";
         }
-        window.onload = iniciarCamera;
 
-        // Atualiza o nome do objeto detectado
-        function atualizarNomeObjeto() {
-            fetch('http://127.0.0.1:5000/analisar_material')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('name_Objeto').textContent = data.objeto;
-                })
-                .catch(() => {
-                    document.getElementById('name_Objeto').textContent = "Nenhum";
-                });
-        }
-        setInterval(atualizarNomeObjeto, 5000);
+        // Executar ao carregar página
+        window.addEventListener('load', function() {
+            iniciarCamera();
+            carregarDados();
+            // Recarregar dados a cada 10 segundos
+            setInterval(carregarDados, 10000);
+        });
     </script>
 </body>
 </html>
