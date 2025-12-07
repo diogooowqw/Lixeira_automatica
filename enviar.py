@@ -9,7 +9,8 @@ BT_PORT = "COM5"        # Porta Bluetooth do seu PC para ESP32-CAM
 BAUD = 115200
 CHUNK_SIZE = 1024
 TIMEOUT = 5
-INTERVALO_CAPTURA = 0.05  # tira foto a cada 3s
+INTERVALO_CAPTURA = 0.05  # intervalo entre capturas rápidas
+PAUSA_DEPOIS = 10         # pausa após enviar resultado para IA
 
 ser = serial.Serial(BT_PORT, BAUD, timeout=0.2)
 
@@ -48,8 +49,6 @@ def receber_frame():
         # Lê bytes
         img_bytes = bytearray()
         recebido = 0
-        inicio = time.time()
-
         while recebido < tamanho:
             data = ser.read(min(CHUNK_SIZE, tamanho - recebido))
             if data:
@@ -67,10 +66,9 @@ def receber_frame():
         with lock:
             ultima_imagem = bytes(img_bytes)
 
-        # ------------------------ SALVAR EM ARQUIVO ------------------------ #
+        # Salva em arquivo
         with open("temp.jpg", "wb") as f:
             f.write(ultima_imagem)
-        # ------------------------------------------------------------------- #
 
         print(f"📸 Foto capturada ({len(ultima_imagem)} bytes) — salva como temp.jpg")
 
@@ -101,45 +99,52 @@ def video_feed():
 def thread_auto_captura():
     contador = 0
     while True:
-
         receber_frame()
         time.sleep(INTERVALO_CAPTURA)
-        contador +=1
+        contador += 1
 
-        if contador == 20:  # A cada 20 capturas (1 segundo)
+        if contador == 20:  # A cada 20 capturas
             contador = 0
-            ia_olhar()  # Chama a função da IA
-            
+            numero = ia_olhar()  # Chama a função da IA
+
+            # Envia número para o Arduino via Bluetooth
+            if numero:
+                ser.write((numero + "\n").encode())
+                print(f"➡️ Número enviado para Arduino: {numero}")
+
+            # PAUSA DEPOIS DE ENVIAR RESULTADO
+            print(f"⏱ Aguardando {PAUSA_DEPOIS}s para o carrinho jogar o lixo...")
+            time.sleep(PAUSA_DEPOIS)
+
 
 # ---------------------IA IA -------------------------#
-def ia_olhar ():
+def ia_olhar():
     GEMINI_API_KEY = "AIzaSyBcf2apAwdbF6U9I-ZffljhIHxv6lTqe04"
-
     client = genai.Client(api_key=GEMINI_API_KEY)
-
-    image_path = "C:/Users/diogo/OneDrive/Imagens/Documentos/Lixeira_automatica/temp.jpg" 
+    image_path = "temp.jpg"
 
     try:
         my_file = client.files.upload(file=image_path)
         response = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=[my_file,
-        "Você deve identificar o material do objeto presente na imagem, " 
-        "dentre plástico, papel, vidro, metal e, caso nenhum se aplique, "
-        "responda vazio, de objetos presentes em imagens fornecidas. "
-        "Não identifique o chão vermelho/laranja ou reflexos de luz, "
-        "lembrando que os gachos de metal na parede não devem ser analisados. "
-        "Apenas identifique se algo for colocado sobre essa superfície vermelha/laranja "
-        "Sua resposta deve ser apenas o numero referente ao material "
-        "(metal=1 vidro=2 papel=3 plastico=4 e vazio=5). "
-        "Fale o que é o material no final (exemplo: lapis, dinheiro, etc)."],
+                      "Você deve identificar o material do objeto presente na imagem, " 
+                      "dentre plástico, papel, vidro, metal e, caso nenhum se aplique, "
+                      "responda vazio. Sua resposta deve ser apenas o numero referente ao material "
+                      "(metal=1 vidro=2 papel=3 plastico=4 e vazio=5)."
+                      ]
         )
-        print(response.text)#NAO APAGA ESSE PROMPT GUYS
+        print("📥 Resposta Gemini:", response.text)
+        # Retorna o primeiro número válido
+        for c in response.text:
+            if c in "12345":
+                return c
+        return "5"  # vazio se não encontrar
     finally:
-        if 'my_file' in locals():#TALVEZ PRECISE TIRAR, MAS DEIXA POR ENQUANTO
+        if 'my_file' in locals():
             client.files.delete(name=my_file.name)
-        
-        
+
+
 # ---------------- Main ---------------- #
 if __name__ == '__main__':
     print("🚀 Servidor Flask em: http://localhost:5000/video_feed")

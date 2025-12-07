@@ -1,6 +1,7 @@
 import serial
 import time
 import threading
+from google import genai
 from flask import Flask, Response
 
 # ---------------- Configurações ---------------- #
