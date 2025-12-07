@@ -1,26 +1,31 @@
 import serial
 import time
 import threading
+from datetime import datetime
 from google import genai
 from flask import Flask, Response
 
-# ---------------- Configurações ---------------- #
-BT_PORT = "COM5"        # Porta Bluetooth do seu PC para ESP32-CAM
+# ---------------- CONFIGURAÇÕES ---------------- #
+BT_PORT = "COM5"        # Porta Bluetooth ou Serial do Arduino/ESP32
 BAUD = 115200
 CHUNK_SIZE = 1024
 TIMEOUT = 5
 INTERVALO_CAPTURA = 0.05  # intervalo entre capturas rápidas
 PAUSA_DEPOIS = 10         # pausa após enviar resultado para IA
 
+# Serial para comunicação com Arduino via Bluetooth
 ser = serial.Serial(BT_PORT, BAUD, timeout=0.2)
 
-# ---------------- Flask ---------------- #
+# Gemini API
+GEMINI_API_KEY = "SUA_CHAVE_AQUI"
+client = genai.Client(api_key=GEMINI_API_KEY)
+
+# Flask
 app = Flask(__name__)
 ultima_imagem = None
 lock = threading.Lock()
-travar_cam = threading.Lock()
 
-# ---------------- Função para capturar e salvar imagem ---------------- #
+# ---------------- FUNÇÃO PARA CAPTURAR FRAME ---------------- #
 def receber_frame():
     global ultima_imagem
     try:
@@ -40,13 +45,13 @@ def receber_frame():
                 print("⚠️ Timeout lendo SIZE")
                 return None
 
-        # Espera início
+        # Espera início da imagem
         while ser.readline().strip() != b"----START IMAGE----":
             if time.time() - inicio > TIMEOUT:
                 print("⚠️ Timeout iniciando imagem")
                 return None
 
-        # Lê bytes
+        # Lê bytes da imagem
         img_bytes = bytearray()
         recebido = 0
         while recebido < tamanho:
@@ -58,7 +63,7 @@ def receber_frame():
                 print("⚠️ Timeout lendo bytes")
                 return None
 
-        # Fim
+        # Fim da imagem
         while ser.readline().strip() != b"----END IMAGE----":
             pass
 
@@ -66,17 +71,18 @@ def receber_frame():
         with lock:
             ultima_imagem = bytes(img_bytes)
 
-        # Salva em arquivo
+        # Salva em arquivo temporário
         with open("temp.jpg", "wb") as f:
             f.write(ultima_imagem)
 
-        print(f"📸 Foto capturada ({len(ultima_imagem)} bytes) — salva como temp.jpg")
+        hora_captura = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(f"📸 Foto capturada ({len(ultima_imagem)} bytes) em {hora_captura} — salva como temp.jpg")
 
     except Exception as e:
         print("❌ Erro:", e)
 
 
-# ---------------- Stream MJPEG ---------------- #
+# ---------------- STREAM MJPEG ---------------- #
 def gerar_stream():
     global ultima_imagem
     while True:
@@ -95,7 +101,43 @@ def video_feed():
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-# ---------------- Captura automática ---------------- #
+# ---------------- FUNÇÃO DE ANÁLISE IA ---------------- #
+def ia_olhar():
+    image_path = "temp.jpg"
+    hora_requisicao = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    print(f"⏱ Requisição enviada para Gemini em: {hora_requisicao}")
+
+    try:
+        my_file = client.files.upload(file=image_path)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=[my_file,
+                      "Analise a imagem enviada e identifique o material do objeto presente "
+                      "**somente no centro da imagem**. "
+                      "Ignore bordas, reflexos, fundo ou chão. "
+                      "Se não houver nenhum objeto visível no centro, considere como vazio. "
+                      "Se houver um objeto, identifique seu material dentre: plástico, papel, vidro, metal. "
+                      "Sua resposta deve ser **apenas o número correspondente ao material**: "
+                      "(metal=1, vidro=2, papel=3, plástico=4, vazio=5). "
+                      "Após o número, informe o nome do objeto com detalhes (ex: lápis, garrafa, moeda). "
+                      f"A requisição foi enviada em: {hora_requisicao}. "
+                      "Se não houver objeto, apenas retorne 5."]
+        )
+        print("📥 Resposta Gemini:", response.text)
+         
+        # Retorna o primeiro número válido
+        for c in response.text:
+            if c in "12345":
+                return c
+        return "5"  # vazio se não encontrar
+
+    finally:
+        if 'my_file' in locals():
+            client.files.delete(name=my_file.name)
+
+
+# ---------------- THREAD AUTOMÁTICA DE CAPTURA ---------------- #
 def thread_auto_captura():
     contador = 0
     while True:
@@ -105,58 +147,24 @@ def thread_auto_captura():
 
         if contador == 20:  # A cada 20 capturas
             contador = 0
-            numero = ia_olhar()  # Chama a função da IA
+            numero = ia_olhar()  # chama IA
 
-            # Envia número para o Arduino via Bluetooth
+            # Envia número para Arduino via Bluetooth
             if numero:
                 ser.write((numero + "\n").encode())
                 print(f"➡️ Número enviado para Arduino: {numero}")
 
-            # PAUSA DEPOIS DE ENVIAR RESULTADO
+            # Pausa para carrinho jogar o lixo
             print(f"⏱ Aguardando {PAUSA_DEPOIS}s para o carrinho jogar o lixo...")
             time.sleep(PAUSA_DEPOIS)
 
 
-# ---------------------IA IA -------------------------#
-def ia_olhar():
-    GEMINI_API_KEY = "AIzaSyBcf2apAwdbF6U9I-ZffljhIHxv6lTqe04"
-    client = genai.Client(api_key=GEMINI_API_KEY)
-    image_path = "temp.jpg"
-
-    try:
-        my_file = client.files.upload(file=image_path)
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=[my_file,
-                    "Analise a imagem enviada e identifique o material do objeto presente **somente no centro da imagem**. "
-                    "Ignore bordas, reflexos e cores do chão ou fundo. "
-                    "Se não houver nenhum objeto visível no centro, considere como vazio. "
-                    "Se houver um objeto, identifique seu material dentre: plástico, papel, vidro, metal. "
-                    "Sua resposta deve ser **apenas o número correspondente ao material**: "
-                    "(metal=1, vidro=2, papel=3, plástico=4, vazio=5). "
-                    "Após o número, informe o nome do objeto com detalhes (ex: lápis, garrafa, moeda). "
-                    
-                    "Se não houver objeto, apenas retorne 5."
-
-                      ]
-        )
-        print("📥 Resposta Gemini:", response.text)
-        # Retorna o primeiro número válido
-        for c in response.text:
-            if c in "12345":
-                return c
-        return "5"  # vazio se não encontrar
-    finally:
-        if 'my_file' in locals():
-            client.files.delete(name=my_file.name)
-
-
-# ---------------- Main ---------------- #
+# ---------------- MAIN ---------------- #
 if __name__ == '__main__':
     print("🚀 Servidor Flask em: http://localhost:5000/video_feed")
 
-    # inicia thread da câmera
+    # inicia thread da captura automática
     threading.Thread(target=thread_auto_captura, daemon=True).start()
 
-    # inicia servidor
+    # inicia servidor Flask
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
