@@ -4,13 +4,12 @@
   box-sizing: border-box;
 }
 
-body {
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(230, 230, 230)!important;
     font-family: "Poppins", sans-serif;
-    font-style: normal;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    overflow-x: hidden; /* Remove scroll horizontal */
-    width: 100vw;
-    height: 100vh;
+    overflow-x: hidden;
 }
 
 /*CABECALHO*/
@@ -157,7 +156,7 @@ body {
     position: absolute;
     bottom: 15px;
     left: 15px;
-    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.12); /* sombra clean e suave */
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.12); 
 }
 #title_objdtc{
     display: flex;
@@ -259,35 +258,43 @@ body {
     margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-gap: 10px;
-    height:248px;
-    width: 1280px;
+    grid-gap: 15px;
+    height:220px;
+    width: 100%;
     color:#FFFFFF;
+    justify-content: center;
+    align-items: center;
     
 }
 .materiais{
     align-self: center;
-    border-color: transparent;
-    border-radius: 6px;
+    
+    border-radius: 15px;
     height: 80%;
-    width: 90%;
+    width: 80%;
     display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    
 }
 #metal{
     border-color: transparent;
-    background-color: #f2d600;
+    background-color: #e2deb0;
+    color: #AC5F00;
 }
 #papel{
-    border-color: transparent;
-    background-color: #2B7FFF;
+    
+    background-color: #c1cddd;
+    color: #1447E6;
 }
 #vidro{
-    border-color: transparent;
-    background-color: #00bc48;
+    background-color: #c8e2d2;
+    color: #008236;
 }
 #plastico{
-    border-color: transparent;
-    background-color: #ff4650;
+    
+    background-color: #d8bebe;
+    color: #C10007;
 }
 .top-part{
     margin-top: 8%;
@@ -311,9 +318,9 @@ body {
     font-family: var(--font-geist-sans);
 }
 .icone{
-    font-size: 20px;
-    width: 40px;
-    height: 40px;
+    font-size: 25px;
+    width: 50px;
+    height: 50px;
     
 }
 .unidades{
@@ -327,7 +334,93 @@ body {
     font-size: 30px;
     margin-inline-start: 20px;
 }
+#divHistorico{
+    margin-top: 60px;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+#titleHistorico{
+    margin-left: 10px;
+    color: black;
+}
+#ego{
+    font-size: 2rem;
+    font-weight: 700;
+}
+#beta{
+    font-size: 15px;
+}
+#tabelaHistorico{
+    width: 90%;
+    border-radius: 10px;
+    background-color: white;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 40px;
+}
+.topicos{
+    background-color: #f3f4f6;
+    text-align: left;
+    padding: 20px;
+    font-weight: 500;
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    font-weight: 500;
+}
+.lista{
+    padding: 30px;
+    font-size: 14px;
+    color: rgb(0, 0, 0);
+    font-weight: 500;
+}
+#destaqueMetal{
+    background-color: #e2deb0;
+    color: #AC5F00;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+#destaquePapel{
+    background-color: #c1cddd;
+    color: #1447E6;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+#destaqueVidro{
+    background-color: #c8e2d2;
+    color: #008236;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+#destaquePlástico{
+    background-color: #d8bebe;
+    color: #C10007;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+#botaoDelete{
+    width: 35px;
+    height: 35px;
+    background-color: #855858;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.mogger{
+    align-items: center;
+    justify-content: center;
+    display: flex;
 
+}
+.material-symbols-outlined{
+    font-size: 40px;
+    color:#ffffff
+}
+#botaoDelete:hover{
+    background-color: #ff0000;
+    transition: 0.7s;
 #historico{
   margin-top: 20px;
   
