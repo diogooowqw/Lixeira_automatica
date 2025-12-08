@@ -18,6 +18,7 @@ else {
   <div id="text_WIFI">Conectando</div>`
 }
 
+
 function parseToDate(input) {
   if (!input) return null;
   if (input instanceof Date) return input;
@@ -55,7 +56,6 @@ function parseToDate(input) {
 
   return null;
 }
-
 
 function calcularDiferenca(valorInicio, valorFim) {
   const d1 = parseToDate(valorInicio);
@@ -97,16 +97,35 @@ function atualizarNomeObjeto() {
     .then(resp => resp.json())
     .then(coletas => {
       console.log(coletas);
-        const horarioData = horarioDataAtual();
+      const horarioData = horarioDataAtual();
+
+
+
+
+      if (coletas.length === 0) {
+        document.getElementById('nameLast_Obj').textContent = '';
+        document.getElementById('last_Time').textContent = '';
+        document.getElementById('namePenult_Obj').textContent = '';
+        document.getElementById('penult_Time').textContent = '';
+        document.getElementById('nameAntepenult_Obj').textContent = '';
+        document.getElementById('antepenult_Time').textContent = '';
+      }
+
       if (coletas.length > 0) {
 
         console.log("Última coleta:");
         console.log("Tipo:", coletas[0].tipo);
         console.log("Horário:", coletas[0].horario);
 
-        document.getElementById('nameLast_Obj').textContent = coletas[0].tipo;
+        document.getElementById('nameLast_Obj').textContent = coletas[0].tipo.charAt(0).toUpperCase() + coletas[0].tipo.slice(1);
         document.getElementById('last_Time').textContent = coletas[0].horario;
         document.getElementById('horaLastDtc').textContent = calcularDiferenca(coletas[0].horario, horarioData.horario);
+        if (coletas.length === 1) {
+          document.getElementById('namePenult_Obj').textContent = '';
+          document.getElementById('penult_Time').textContent = '';
+          document.getElementById('nameAntepenult_Obj').textContent = '';
+          document.getElementById('antepenult_Time').textContent = '';
+        }
       }
 
       if (coletas.length > 1) {
@@ -115,8 +134,12 @@ function atualizarNomeObjeto() {
         console.log("Tipo:", coletas[1].tipo);
         console.log("Horário:", coletas[1].horario);
 
-        document.getElementById('namePenult_Obj').textContent = coletas[1].tipo;
+        document.getElementById('namePenult_Obj').textContent = coletas[1].tipo.charAt(0).toUpperCase() + coletas[1].tipo.slice(1);
         document.getElementById('penult_Time').textContent = coletas[1].horario;
+        if (coletas.length === 2) {
+          document.getElementById('nameAntepenult_Obj').textContent = '';
+          document.getElementById('antepenult_Time').textContent = '';
+        }
       }
 
       if (coletas.length > 2) {
@@ -125,7 +148,7 @@ function atualizarNomeObjeto() {
         console.log("Tipo:", coletas[2].tipo);
         console.log("Horário:", coletas[2].horario);
 
-        document.getElementById('nameAntepenult_Obj').textContent = coletas[2].tipo;
+        document.getElementById('nameAntepenult_Obj').textContent = coletas[2].tipo.charAt(0).toUpperCase() + coletas[2].tipo.slice(1);
         document.getElementById('antepenult_Time').textContent = coletas[2].horario;
       }
     })
@@ -182,6 +205,79 @@ setInterval(() => {
   contarObjetosDetectados('vidro');
   contarObjetosDetectados('papel');
   contarObjetosDetectados('plastico');
+  atualizarHistorico();
 }, 5000);
+
+function excluirRegistro(id) {
+  if (confirm('Deseja realmente excluir este registro?')) {
+    fetch(`http://localhost:3000/api/coleta/${id}`, {
+      method: 'DELETE'
+    })
+      .then(response => {
+        if (response.ok) {
+          atualizarHistorico();
+          atualizarNomeObjeto();
+          contadorObjetosHoje();
+          contarObjetosDetectados('metal');
+          contarObjetosDetectados('vidro');
+          contarObjetosDetectados('papel');
+          contarObjetosDetectados('plastico');
+          alert('Registro excluído com sucesso.');
+        }
+      })
+      .catch(error => console.error('Erro ao excluir:', error));
+  }
+}
+
+function atualizarHistorico() {
+  fetch('http://localhost:3000/api/coletas')
+    .then(resp => resp.json())
+    .then(coletas => {
+      const tabelaHistorico = document.getElementById('tabelaHistorico');
+      const cabecalho = tabelaHistorico.querySelector('tr');
+      tabelaHistorico.innerHTML = '';
+      tabelaHistorico.appendChild(cabecalho);
+
+      coletas.forEach(coleta => {
+        const linha = document.createElement('tr');
+        const tipoCelula = document.createElement('td');
+        tipoCelula.className = 'lista';
+        const destaqueSpan = document.createElement('span');
+        destaqueSpan.id = `destaque${coleta.tipo.charAt(0).toUpperCase() + coleta.tipo.slice(1)}`;
+        destaqueSpan.textContent = coleta.tipo.charAt(0).toUpperCase() + coleta.tipo.slice(1);
+        tipoCelula.appendChild(destaqueSpan);
+
+        const horariodataCelula = document.createElement('td');
+
+        const dataObj = new Date(coleta.data);
+        const dataFormatada = dataObj.toLocaleDateString('pt-BR');
+        horariodataCelula.textContent = `${dataFormatada} ${coleta.horario}`;
+        horariodataCelula.className = 'lista';
+
+        const cameraCelula = document.createElement('td');
+        cameraCelula.className = 'lista';
+        cameraCelula.textContent = 'Câmera ESP32 - Coleta em Tempo Real';
+
+        const deleteCelula = document.createElement('td');
+        deleteCelula.className = 'lista mogger';
+        deleteCelula.title = 'Excluir Registro';
+        const deleteDiv = document.createElement('div');
+        deleteDiv.id = 'botaoDelete';
+        deleteDiv.innerHTML = `<span class="material-symbols-outlined">delete_forever</span>`;
+        deleteCelula.appendChild(deleteDiv);
+
+        deleteDiv.addEventListener('click', () => excluirRegistro(coleta.id));
+
+        linha.appendChild(tipoCelula);
+        linha.appendChild(horariodataCelula);
+        linha.appendChild(cameraCelula);
+        linha.appendChild(deleteCelula);
+        tabelaHistorico.appendChild(linha);
+      });
+    })
+    .catch(err => {
+      console.error(err);
+    });
+}
 
 
