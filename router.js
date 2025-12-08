@@ -13,8 +13,8 @@ function mapearNumeroParaMaterial(numero) {
     'metal': 'metal',
     'vidro': 'vidro',
     'papel': 'papel',
-    'plastico': 'plastico',
-    'plástico': 'plastico',
+    'plastico': 'plástico',
+    'plástico': 'plástico',
     'vazio': 'vazio'
   };
   return mapa[String(numero).trim().toLowerCase()] || null;
