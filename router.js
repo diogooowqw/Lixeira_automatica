@@ -8,7 +8,7 @@ function mapearNumeroParaMaterial(numero) {
     '1': 'metal',
     '2': 'vidro',
     '3': 'papel',
-    '4': 'plastico',
+    '4': 'plástico',
     '5': 'vazio',
     'metal': 'metal',
     'vidro': 'vidro',
